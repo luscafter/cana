@@ -5,6 +5,7 @@ import random
 import timeit
 
 # https://github.com/luscafter/cana
+
 # Teste o software na ferramenta Colab:
 # https://colab.research.google.com
 
@@ -134,7 +135,7 @@ def randomize(n):
 
 # Função responsável por executar a função de preencher e ordenar o vetor
 
-def fill(function, name):
+def fill(times, function, name):
 	print("\nExecutando [{}]\n".format(name))
 
 	for i in size:
@@ -143,43 +144,40 @@ def fill(function, name):
 		copy = list(v)
 		times.append(timeit.timeit(function.format(copy), setup="from __main__ import " + name, number=1))
 
-		if i == 24000:
-			print()
-
 size = [1000, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000]
-functions = ["counting_sort({})", "radix_sort({})", "bucket_sort({})", "shell_sort({})"]
-names = ["counting_sort", "radix_sort", "bucket_sort", "shell_sort"]
 
-# Função responsável por plotar os gráficos das funções
+time1 = []
+time2 = []
+time3 = []
+time4 = []
 
-for i in range(4):
-	times = []
-	fill(functions[i], names[i])
-	fig, ax = p.subplots()
-	text = "Counting Sort"
+# Plotando os gráficos das funções
 
-	if i == 1:
-		text = "Radix Sort"
-	elif i == 2:
-		text = "Bucket Sort"
-	elif i == 3:
-		text = "Shell Sort"
+fill(time1, "counting_sort({})", "counting_sort")
+fill(time2, "radix_sort({})", "radix_sort")
+fill(time3, "bucket_sort({})", "bucket_sort")
+fill(time4, "shell_sort({})", "shell_sort")
 
-	ax.plot(size, times, label=text)
+fig, ax = p.subplots()
 
-	p.ylabel("TEMPO")
-	p.xlabel("TAMANHO")
-	p.title("Algoritmos lineares")
+ax.plot(size, time1, label="Counting Sort")
+ax.plot(size, time2, label="Radix Sort")
+ax.plot(size, time3, label="Bucket Sort")
+ax.plot(size, time4, label="Shell Sort")
 
-	legend = ax.legend(loc="upper center", shadow=True)
+p.title("Algoritmos lineares")
+p.xlabel("TAMANHO")
+p.ylabel("TEMPO")
 
-	frame = legend.get_frame()
-	frame.set_facecolor('1.0')
+legend = ax.legend(loc="upper center", shadow=True)
 
-	for label in legend.get_texts():
-		label.set_fontsize('large')
+frame = legend.get_frame()
+frame.set_facecolor('1.0')
 
-	for label in legend.get_lines():
-		label.set_linewidth(2.0)
+for label in legend.get_texts():
+	label.set_fontsize('large')
 
-	p.show()
+for label in legend.get_lines():
+	label.set_linewidth(2.0)
+
+p.show()
